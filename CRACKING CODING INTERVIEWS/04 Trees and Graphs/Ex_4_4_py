@@ -1,0 +1,56 @@
+# Check Balanced: Implement a function to check if a binary tree is balanced. For the purposes of
+# this question, a balanced tree is defined to be a tree such that the heights of the two subtrees of any
+# node never differ by more than one.
+
+
+from TreesGraphs import Node_Bin
+
+
+## Short but not eficient
+def getHeight(root: Node_Bin):
+    if root is None:  # Base Case
+        return -1
+    return max(getHeight(root.left), getHeight(root.right)) + 1
+
+
+def isBalanced(root: Node_Bin):
+    if root is None:
+        return True
+    if abs(getHeight(root.right) - getHeight(root.left)) > 1:
+        return False
+    else:
+        return isBalanced(root.left) and isBalanced(root.right)
+
+
+## Eficient
+def checkHeight(root: Node_Bin):
+    if root is None:
+        return -1
+
+    heightLeft = checkHeight(root.left)
+    if heightLeft is None:
+        return None
+
+    heightRight = checkHeight(root.right)
+    if heightRight is None:
+        return None
+
+    if abs(heightLeft - heightRight) > 1:
+        return None
+    else:
+        return max(heightLeft, heightRight)+1
+
+
+def isBalanced_optimized(root: Node_Bin):
+    if checkHeight(root) is not None:
+        return True
+    return False
+
+
+t = Node_Bin(1, 2, 3)
+t.left.left = Node_Bin(4, 5, 6)
+t.left.right = Node_Bin(7)
+#
+print(isBalanced(t))
+print(isBalanced_optimized(t))
+
